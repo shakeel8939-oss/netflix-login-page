@@ -4,11 +4,21 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 
+const allowedOrigins = [
+  "https://netflix-login-page-phi.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:5174",
+];
+
 app.use(
   cors({
-    origin: "https://netflix-login-page-phi.vercel.app",
-    methods: "GET,POST",
-    allowedHeaders: "Content-Type",
+    origin: (origin, cb) => {
+      if (!origin) return cb(null, true);
+      if (allowedOrigins.includes(origin)) return cb(null, true);
+      return cb(new Error("Not allowed by CORS"));
+    },
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
   })
 );
 

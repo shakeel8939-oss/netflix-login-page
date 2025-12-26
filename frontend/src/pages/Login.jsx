@@ -14,7 +14,8 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("https://netflix-login-page-2-3tzt.onrender.com/login", {
+      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const res = await axios.post(`${API_URL}/login`, {
         email,
         password,
       });
@@ -23,6 +24,7 @@ export default function Login() {
         navigate("/dashboard");
       }
     } catch (err) {
+      console.error(err);
       setError("Invalid email or password");
     }
   };
